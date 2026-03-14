@@ -10,8 +10,6 @@ const {
 
 router.use(auth);
 
-router.get('/my', getMyPayroll);
-
 router.use(authorize('admin')); // Following routes are admin-only
 router.get('/all', getAllPayroll);
 router.post('/', createPayroll);

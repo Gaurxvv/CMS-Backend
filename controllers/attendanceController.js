@@ -61,7 +61,16 @@ const getAttendanceStatus = async (req, res) => {
 
 const getAttendanceHistory = async (req, res) => {
     try {
-        const history = await Attendance.find({ userId: req.user.id }).sort({ date: -1 }).limit(30);
+        const { month, year } = req.query;
+        let query = { userId: req.user.id };
+
+        if (month && year) {
+            const startDate = `${year}-${month.toString().padStart(2, '0')}-01`;
+            const endDate = `${year}-${month.toString().padStart(2, '0')}-31`; // Simplified for query
+            query.date = { $gte: startDate, $lte: endDate };
+        }
+
+        const history = await Attendance.find(query).sort({ date: -1 });
         res.json(history);
     } catch (error) {
         res.status(500).json({ message: error.message });

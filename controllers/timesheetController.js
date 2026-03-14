@@ -42,7 +42,16 @@ const getAllTimesheets = async (req, res) => {
 // Get employee's own timesheets
 const getMyTimesheets = async (req, res) => {
     try {
-        const timesheets = await Timesheet.find({ userId: req.user.id }).sort({ date: -1 });
+        const { month, year } = req.query;
+        let query = { userId: req.user.id };
+
+        if (month && year) {
+            const startDate = `${year}-${month.toString().padStart(2, '0')}-01`;
+            const endDate = `${year}-${month.toString().padStart(2, '0')}-31`; // Simplified for query
+            query.date = { $gte: startDate, $lte: endDate };
+        }
+
+        const timesheets = await Timesheet.find(query).sort({ date: -1 });
         res.json(timesheets);
     } catch (error) {
         res.status(500).json({ message: error.message });
