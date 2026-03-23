@@ -18,6 +18,10 @@ const payrollSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    extraDays: {
+        type: Number,
+        default: 0
+    },
     tax: {
         type: Number,
         default: 0
