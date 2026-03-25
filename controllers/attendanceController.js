@@ -1,8 +1,9 @@
 const Attendance = require('../models/Attendance');
 const checkIn = async (req, res) => {
     try {
-        const date = new Date().toISOString().split('T')[0];
-        const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+        const now = new Date();
+        const date = now.toISOString().split('T')[0];
+        const time = now.toISOString();
 
         // Check if already checked in
         let attendance = await Attendance.findOne({ userId: req.user.id, date });
@@ -26,8 +27,9 @@ const checkIn = async (req, res) => {
 
 const checkOut = async (req, res) => {
     try {
-        const date = new Date().toISOString().split('T')[0];
-        const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+        const now = new Date();
+        const date = now.toISOString().split('T')[0];
+        const time = now.toISOString();
 
         const attendance = await Attendance.findOne({ userId: req.user.id, date });
 
